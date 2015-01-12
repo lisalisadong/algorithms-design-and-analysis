@@ -1,0 +1,22 @@
+Swirl - R Programming
+
+skip(): skip the current question
+play(): experiment with R on your own; swirl will ignore what you do...
+nxt():  regain swirl's attention
+bye():  cause swirl to exit
+main(): return to swirl's main menu
+info(): displays these options again
+help.start(): more information on a particular topic related to R
+
+lesson 1 - Basic Building Blocks
+
+<-: assign
+c():  (concatenate) create a vector
+?c: learn more about function c
+^:  power
+sqrt(): square root
+abs():  absolute value
+
+c(1, 2, 3, 4) * 2 + 100 = c(102, 104, 106, 108)
+c(1, 2, 3, 4) + c(1, 10) = c(2, 12, 4, 14)
+c(1, 2, 3, 4) + c(1, 10, 100) = c(2, 12, 103, 4) and a warning
