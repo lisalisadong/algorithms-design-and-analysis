@@ -1,3 +1,3 @@
-R Programming
+Cryptography I
 --------
-Learning [R programming on Coursera](https://www.coursera.org/course/rprog). This is the second course in the [Johns Hopkins Data Science Specialization](https://www.coursera.org/specialization/jhudatascience/1?utm_medium=courseDescripLabel).
+Learning [Cryptography I on Coursera](https://www.coursera.org/course/crypto).
