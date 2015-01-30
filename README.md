@@ -1,3 +1,3 @@
-Cryptography I
+Algorithms: Design and Analysis
 --------
-Learning [Cryptography I on Coursera](https://www.coursera.org/course/crypto).
+Learning [Algorithms: Design and Analysis, Part I on Coursera](https://www.coursera.org/course/crypto).
