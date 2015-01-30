@@ -5,9 +5,11 @@ import java.text.*;
 import java.math.*;
 import java.util.regex.*;
 
-public class MergeSort {
+public class CountInversions {
+	
+	private static long count = 0;
 
-	static List<Integer> sort(List<Integer> unsorted) {
+	private static List<Integer> sort(List<Integer> unsorted) {
 		int size = unsorted.size();
 		if (size == 1) {
 			return unsorted;
@@ -18,7 +20,7 @@ public class MergeSort {
 		}
 	}
 	
-	static List<Integer> merge(List<Integer> first, List<Integer> second) {
+	private static List<Integer> merge(List<Integer> first, List<Integer> second) {
 		List<Integer> merged = new ArrayList<Integer>();
 		int i = 0;
 		int j = 0;
@@ -29,17 +31,19 @@ public class MergeSort {
 			} else {
 				merged.add(second.get(j));
 				j++;
+				count = count + first.size() - i;
 			}
 		}
 		return merged;
 	}
 	
     public static void main(String[] args) throws FileNotFoundException {
-    	Scanner testFile = new Scanner(new File("Test.txt"));
+    	Scanner testFile = new Scanner(new File("IntegerArray.txt"));
     	List<Integer> toSort = new ArrayList<Integer>();
     	while (testFile.hasNextInt()) {
     		toSort.add(testFile.nextInt());
     	}
-    	System.out.println(sort(toSort));
+    	sort(toSort);
+    	System.out.println(count);
     }
 }
