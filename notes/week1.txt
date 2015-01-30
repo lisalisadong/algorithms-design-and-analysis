@@ -1,0 +1,115 @@
+Week 1
+-----------------------------
+I. INTRODUCTION
+-----------------------------
+Example:
+--------
+5678 * 1234 = 7006652
+Integer Multiplication: (constant * n^2 basic operations)
+Karatsuba Multiplication:
+a = 56, b = 78, c = 12, d = 34
+1) a * c = 672
+2) b * d = 2652
+3) (a + b) * (c + d) = 134 * 46 = 6164
+4) 3) - 2) - 1) = 2840
+5) 1) * 10000 + 2) + 4) * 100 = 7006652
+Recursive:
+x * y = 10^n * ac + 10^(n/2) * (ad + bc) + bd (4 recursive multiplications)
+ad + bc = (a + b) * (c + d) - ac - bd (only 3 recursive multiplications needed)
+
+Merge Sort:
+-----------
+* good introduction to divide & conquer
+    - improves over Selection, Insertion, Bubble sorts
+* Claim: <= 6nlog2(n) + 6n operations
+* Proof of claim (use recursive tree):
+    - at each level j = 0, 1, 2, ..., log2(n), there are 2^j subproblems, each
+    of size n / (2^j)
+    - total operations at level j <= 2^j * 6 * n / (2^j) = 6n
+    - total <= 6n(log2(n) + 1) -- work per level * number of levels
+
+Guiding Principles:
+-------------------
+#1 "worst-case analysis": our running time bound holds for every input of length n.
+    - particularly appropriate for "general-purpose" routines
+    As opposed to:
+    - "average-case analysis"
+    - benchmark
+    => requires domain knowledge
+#2 won't pay attention to constant factors, lower-order terms.
+    Justifications:
+    1) easier
+    2) constants depend on architecture/compiler/programmers anyways
+    3) lose very little predictive power
+#3 Asymptotic analysis: focus on running time for large input sizes n.
+    Justifications: only big problems are interesting
+
+"Fast" algorithm: worst-case running time grows slowly with input size
+
+-----------------------------
+II. ASYMPTOTIC ANALYSIS
+-----------------------------
+Asymptotic Analysis:
+--------------------
+High-level idea: suppress constant factors (too system-dependent) and lower-order
+terms (irrelavent for large input)
+Example: 6nlog2(n) + 6n --> nlogn
+Terminology: running time is O(nlogn) -- "big-oh" of nlogn where n is input size
+
+Big-Oh Notation:
+----------------
+Formal Def.: T(n) = O(F(n)), if and only if there exist constants c, n0 > 0 such
+that T(n) <= c*F(n), for all n >= n0
+
+Big-Omega Notation:
+-------------------
+T(n) = Omega(F(n)), if and only if there exist constants c, n0 > 0 such that
+T(n) >= c*F(n), for all n >= n0
+
+Big-Theta Notation:
+-------------------
+T(n) = Theta(F(n)), if and only if T(n) = O(F(n)) and T(n) = Omega(F(n))
+Equivalent: there exist constants c1, c2 > 0 such that c1F(n) <= T(n) <= c2F(n)
+for all n  >= n0
+
+Little-Oh Notation:
+-------------------
+T(n) = o(F(n)) if and only if for all constants c > 0, there exists a constant
+n0 such that T(n) <= cF(n), for all n >= n0
+
+---------------------------------
+III. DIVIDE & CONQUER ALGORITHMS
+---------------------------------
+The Paradigm:
+-------------
+1) DIVIDE into smaller subproblems
+2) CONQUER via recursive calls
+3) COMBINE solutions for subproblems into one for the original problem
+
+Example:
+--------
+Counting inversions in an array (Sort and count)
+
+Matrix Multiplication:
+----------------------
+a b . e f = ae+bg af+bh
+c d   g h   ce+dg cf+dh
+Time: O(n^3)
+Strassen's Algorithm:
+    1) recursively compute only 7 (cleverly chosen) products
+    2) do the necessary (clever) additions and subtractions (still O(n^2) time)
+    Fact: better than cubic time
+The Seven Products:
+P1 = A(F-H), P2 = (A+B)H, P3 = (C+D)E, P4 = D(G+E), P5 = (A+D)(E+H),
+P6 = (B-D)(G+H), P7 = (A-C)(E+F)
+AE + BG = P5 + P4 - P2 + P6
+AF + BH = P1 + P2
+CE + DG = P3 + P4
+CF + DH = P1 + P5 - P3 - P7
+
+The Closest Pair Problem:
+-------------------------
+1-D Version: sort and find in O(n long n) time
+Approach:
+1) make copies of points sorted by x-coordinate and by y-coordinate [O(n log n)]
+2) use divide and conquer
