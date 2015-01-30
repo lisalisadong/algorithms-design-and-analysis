@@ -1,3 +1,8 @@
+/**
+ * Sort an array of number.
+ * 
+ * @author QingxiaoDong
+ */
 
 import java.io.*;
 import java.util.*;

@@ -1,3 +1,9 @@
+/**
+ * Find the number of inversions in an array.
+ * (two elements a[i] and a[j] form an inversion if a[i] > a[j] and i < j)
+ * 
+ * @author QingxiaoDong
+ */
 
 import java.io.*;
 import java.util.*;
