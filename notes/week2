@@ -1,0 +1,78 @@
+Week 2
+-----------------------------
+IV. THE MASTER METHOD
+-----------------------------
+
+Recurrence Format:
+------------------
+1) Base case: T(n) <= c constant for all sufficiently small n
+2) For all larger n: T(n) <= aT(n/b) + O(nˆd) where
+    a = number of recursive calls (>= 1)
+    b = input size shrinkage factor (> 1)
+    d = exponent in running time of "combine step" (>= 0)
+    [a, b, d independent of n]
+
+The Master Method:
+------------------
+T(n) =
+    O(nˆdlogn)  if a = bˆd (case 1)
+    O(nˆd)      if a < bˆd (case 2)
+    O(nˆlogb(a))if a > bˆd (case 3)
+
+Example:
+--------
+#1 Merge sort:
+    a = 2
+    b = 2
+    d = 1
+=> case 1
+
+#2 Binary search in a sorted array:
+    a = 1
+    b = 2
+    d = 0
+=> case 1
+
+#3 Integer multiplication(x * y = 10^n * ac + 10^(n/2) * (ad + bc) + bd)
+    a = 4
+    b = 2
+    d = 1
+=> case 3
+
+#4 Gauss's integer multiplication (ad + bc = (a + b) * (c + d) - ac - bd)
+    a = 3
+    b = 2
+    d = 1
+=> case 3
+
+#5 Strassen's matrix multiplication algorithm:
+    a = 7
+    b = 2
+    d = 2
+=> case 3
+
+#6 Fictitious recurrence: T(n) < 2T(n/2) + O(nˆ2)
+    a = 2
+    b = 2
+    d = 2
+=> case 2
+
+Proof:
+------
+Recursion tree:
+At each level j = 0,1,2,...,logb(n), there are aˆj subproblems, each of size n/bˆj
+Work at level j <= aˆj * c * (n/bˆj)ˆd = cnˆd * (a/bˆd)ˆj
+Total work <= cnˆd * ∑(a/bˆd)ˆj (j = 0~logb(n))
+    If a/bˆd != 1, proof by induction
+
+Interpretation:
+---------------
+    a = rate of subproblem proliferation (RSP)
+    bˆd = rate of work shrinkage  per subproblem (RWS)
+
+    - If RSP < RWS, then the amount of work is decreasing with the recursion level j
+        => most work at the root [might expect O(nˆd)]
+    - If RSP > RWS, then the amount of work is increasing with the recursion level j
+        => most work at the leaves [might expect O(#leaves) (aˆlogb(n) = nˆlogb(a))]
+    - If RSP = RWS, then the amount of work is the same at every recursion level j
+        => [expect O(nˆdlogn)]
