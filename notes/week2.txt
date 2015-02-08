@@ -113,3 +113,28 @@ as well
 
 If input array is already sorted: O(nˆ2)
 Random Pivot: average is n(logn)
+
+-----------------------------
+VI. QUICKSORT - ANALYSIS
+-----------------------------
+A General Decomposition Principle
+1. Iden8fy random variable Y that you really care about
+2. Express Y as sum of indicator random variables:
+    Y = ∑Xe (l = 1~m)
+3. Apply Linearity of expectation:
+    E[Y] = ∑Pr[Xe = 1] (l = 1~m)
+
+Proof of Key Claim:
+-------------------
+- Fix zi, zj with i < j
+- Consider the set zi,zi+1,…,zj-1,zj
+- Inductively: as long as none of these are chosen as a pivot, all are passed to
+the same recursive call.
+- Consider the first among zi,zi+1,..,zj-1,zj that gets chosen as a pivot.
+    1. If zi or zj gets chosen first, then zi and zj get compared
+    2. If one of zi+1,…,zj-1 gets chosen first then zi and zj are never compared
+    [split into different recursive calls]
+- Note: Since pivots always chosen uniformly at random, each of zi,zi+1,…,zjI1,zj
+is equally likely to be the first
+⇒Pr[zi,zj get compared] = 2/(j-i+1)
+⇒So: E[C] = ∑(i = 1~n-1)∑(j = 1~n) 2/(j-1+1)
