@@ -76,3 +76,40 @@ Interpretation:
         => most work at the leaves [might expect O(#leaves) (aˆlogb(n) = nˆlogb(a))]
     - If RSP = RWS, then the amount of work is the same at every recursion level j
         => [expect O(nˆdlogn)]
+
+-----------------------------
+V. QUICKSORT - ALGORITHM
+-----------------------------
+O(nlogn) time "on average", minimal extra memory needed.
+Key idea: partition array around a pivot element
+    - linear time, no extra memory
+    - reduce problem size
+
+In place implementation:
+------------------------
+Assume: pivot is the 1st element in array (if not, swap to first)
+P|<P|>P|?
+
+Pseudocode for partition:
+-------------------------
+Partition(A, l, r)
+- p := A[l]
+- i := l + 1
+- for j := l + 1 to r
+    - if A[j] < p (if A[j > p, do nothing])
+        - swap A[j] and A[i]
+        - i++
+- swap A[l] and A[i - 1]
+
+Correctness of Quicksort:
+-------------------------
+Proof by induction:
+1) base case: array of length 1
+2) inductive step: length >= 2, show if P(k) holds, (all k < n), then P(n) holds
+as well
+    - let k1, k2 = length of 1st, 2nd parts of partitioned array
+    - if 1st, 2nd parts get sorted correctly by recursive calls
+    - so after recursive calls, entire array correctly sorted
+
+If input array is already sorted: O(nˆ2)
+Random Pivot: average is n(logn)
