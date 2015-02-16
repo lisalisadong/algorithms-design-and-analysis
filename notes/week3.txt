@@ -1,0 +1,201 @@
+Week 3
+-----------------------------
+VII. PROBABILITY REVIEW
+-----------------------------
+#1 Sample spaces:
+-----------------
+Omega - all possible outcomes
+Each outcome i has P(i) >= 0
+∑ = 1
+
+#2 Events:
+----------
+Subsets of the possible outcomes
+
+#3 Random variables:
+--------------------
+Real valued function
+
+#4 Expectation:
+---------------
+Average value of random variables
+
+#5 Linearity of expectation:
+----------------------------
+E[∑Xj] = ∑E[Xj]
+Holds even if Xj is not independent
+(The expected value of the sum of random variables is equal to the sum of the
+expectations of the individual random variables)
+
+#6 Conditional probability:
+---------------------------
+Pr[X|Y] - "X given Y"
+    = Pr[X&&Y] / Pr[Y]
+
+#7 Independence:
+----------------
+Def.: Event X and Y are independent if and only if Pr[X&&Y] = Pr[X] * Pr[Y]
+    <=> P[X|Y] = P[X]
+    <=> P[Y|X] = P[Y]
+Random variable:
+    If A and B are independent: E[A*B] = E[A]*E[B]
+
+-----------------------------
+VIII. LINEAR-TIME SELECTION
+-----------------------------
+Randomized Selection:
+---------------------
+O(n)time (randomized) by modifying quicksort
+    - smaller constants and works in place
+O(n)time deterministic algorithm
+    - pivot: median of median (warning: not as practical)
+
+Rselect (array A, length n, order stayistic i)
+0)if n = 1, return A[1]
+1) Choose pivot p from A uniformly at random
+2) Partition A around p, let j = new index of p
+3) If j = i, return p
+4) If j > i, return Rselect(1st part of A, j-1, i)
+5) [if j<i] return Rselect(2nd part of A, n-j, i-j)
+
+Proof:
+    I. Tracking Progress via Phases
+    II. Reduction to Coin Flipping
+    III. Coin Flipping Analysis
+Expected running time <= E[cn ∑(3/4)^j * Xj]
+    = cn ∑ (3/4)^j * E[Xj] -> E[# of coin flips N] = 2
+    <= 2cn ∑(3/4)^j -> geometric sum, <= 1/(1-3/4) = 4
+    <= 8cn = O(n)
+
+Deterministic Selection:
+------------------------
+Choose pivot:
+-------------
+ChoosePivot(A,n)
+- logically break A into n/5 groups of size 5 each
+- sort each group (e.g., using Merge Sort)
+- copy n/5 medians (i.e., middle element of each sorted group)
+- into new array C
+- recursively compute median of C (!)
+- return this as pivot
+
+DSelect(array A, length n, order statistic i)
+1. Break A into groups of 5, sort each group - Theta(n)
+2. C = the n/5 “middle elements” - Theta(n)
+3. p = DSelect(C,n/5,n/10) [recursively computes median of C] - T(n/5)
+4. Partition A around p - Theta(n)
+5. If j = i return p
+6. If j < i return DSelect(1st part of A, j-1, i)
+7. [else if j > i] return DSelect(2nd part of A, n-j, i-j)
+=> T(n) <= c*n + T(n/5) + T(7n/10) - proof by 2-D grid
+=> different-sized subproblems => can’t use Master Method
+
+Linear running time proof:
+--------------------------
+Claim: Let a = 10c
+Then T(n) <= an for all n >= 1
+Proof: by induction on n
+Base case: T(1) = 1 <= a*1 (since a >= 1)
+Inductive Step: [n > 1]
+Inductive Hypothesis: T(k) < a*k for all k < n
+We have: T(n) <= cn + T(n/5) + T(7n/10)
+              <= cn + a(n/5) + a(7n/10)
+               = n(c + 9a/10) = an
+
+A sorting lower bound:
+----------------------
+Theorem: every “comparison-based” sorting algorithm has worst-case running time
+Omega(n logn) [assume deterministic, but lower bound extends to randomized]
+
+Comparison Based Sort: accesses input array elements only via comparisons
+~ “general purpose sorting method”
+
+- Examples: Merge Sort, Quick Sort, Heap Sort
+- Non Examples: Bucket Sort (good for data from distributions), Counting Sort (good
+for small integers), Radix Sort (good for medium sized integers)
+
+-----------------------------
+IX. GRAPHS AND THE CONTRACTION ALGORITHM
+-----------------------------
+Two ingredients:
+ - vertices (nodes)
+ - edges(E) = pairs of vertices
+    - can be undirected [unordered pair]
+    - or directed [ordered pair] (arcs)
+
+Cut of graphs:
+--------------
+- A cut of graphs (V.E) is a partition of V into two non-empty sets A and B
+- The crossing edges of a cut (A, B) are those with:
+    - one end point in each of (A, B) [undirected]
+    - tail in A, head in B [directed]
+- How many cuts does a graph with n vertices have: 2^n - 2
+    - each node have two options, either in A or in B
+
+The minimum cut problem:
+------------------------
+Input: an undirected graph G = (V, E). [parallel edges allowed]
+Goal: compute a cut with fewest number of crossing edges
+Applications:
+    - identify network bottle necks/ weaknesses
+    - community detection in social networks
+    - image segmentation
+        - input = graph of pixels
+        - use edge weights [(u.v) has large weight <=> expect u, v to come from
+        same object]
+        - hope that repeated min cut identifies the primary objects in picture
+
+Sparse vs. Dense Graphs:
+------------------------
+Let n = # of vertices, m = # of edges.
+In most (but not all) applications, m is Omega(n) and O(n^2)
+• in a “sparse” graph, m is or is close to O(n)
+• in a “dense” graph, m is closer to O(n^2)
+
+The Adjacency Matrix:
+---------------------
+Represent G by a n x n 0-1 matrix A where
+Aij = 1 <=> G has an i-j edge
+Variants:
+• Aij = # of i-j edges (if parallel edges)
+• Aij = weight of i-j edge (if any)
+• Aij = +1 if o -> o
+        -1 if o <- o
+Space: Theta(n^2)
+
+Adjacency Lists:
+----------------
+Ingredients
+• array (or list) of vertices
+• array (or list) of edges
+• each edge points to its endpoints
+• each vertex points to edges incident on it
+Space: Theta(m + n)
+
+=> which is better depends on graph density and operations needed.
+
+Random Contraction Algorithm
+----------------------------
+[due to Karger, early 90s]
+While there are more than 2 vertices:
+• pick a remaining edge (u,v) uniformly at random
+• merge (or “contract” ) u and v into a single vertex
+• remove self-loops
+return cut represented by final 2 vertices.
+
+Pr [ output is (A, B) ] = Pr [ never contracts an edge of F]
+Pr [success] >= 1/n^2
+
+Repeated trials:
+    - Pr[all fail] = (1 - 1/n^2)^N
+    - 1 + x <= e^x
+    - If N = n^2, Pr[all fail] <= 1/e
+    - If N = n^2 * ln n, Pr[all fail] <= 1/n
+
+Running time: polynomial in n and m but slow Omega(n^2 m)
+
+The number of min cuts:
+-----------------------
+A graph can have multiple min cuts.
+The largest number of min cuts that a graph with n vertices can have: n(n-1)/2 - n choose 2
+(n-cycle: Each pair of the n edges defines a distinct minimum cut)
