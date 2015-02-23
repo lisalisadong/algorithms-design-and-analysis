@@ -1,0 +1,152 @@
+Week 4
+-----------------------------
+X. GRAPH SEARCH AND CONNECTIVITY
+-----------------------------
+Generic graph search:
+---------------------
+- Goals: 1) find everything findable from a given start vertex
+         2) don't explore anything twice (Running time: O(m + n))
+
+- Algorithm: (given Graph g, vertex s)
+    - initially s explored, all other vertices unexplored
+    - while possible:
+        - choose an edge (u, v) with u explored, v unexplored
+        - mark v explored
+
+BFS vs DFS:
+-----------
+choose crossing edges
+
+Breadth-First Search(BFS):
+- explore nodes in layers
+- can compute shortest path
+- can compute connected components of an undirected graph
+- O(m+n) time using queue(FiFo)
+
+Depth-First Search(DFS):
+- explore aggressively like a maze, backtrack only when necessary
+- compute topological ordering of directed acyclic graph
+- compute connected components in directed graph
+- O(m+n) time using stack(LiFo) or via recursion
+
+Breadth-First Search:
+---------------------
+Basic code:
+- BFS(graph G, start vertex s)
+- mark s as explored
+- let Q = queue data structure(FiFo), initialized with s
+- while Q != blank
+    - remove first node of Q, call it v
+    - for each edge(v, w)
+        - if w explored
+            - mark w explored
+            - add w to Q (at the end)
+
+Shortest path:
+- initialize dist(v) = 0, if v = s, infinite, if v != s
+- when considering edge(v, w)
+    - if w unexplored, then set dist(w) = dist(v) + 1
+
+Undirected connectivity:
+equivalence classes of the relation u~v <=> there exists u-v path in G
+Goal: compute all connected components
+Why: - check network connectivity
+     - graph visualization
+     - clustering
+- all nodes unexplored (labelled 1 to n)
+- for i=1 to n
+    - if i not yet explored
+        - BFS(G, i)
+
+Depth-First Search:
+-------------------
+Basic code:
+- mimic BFS code, use a stack instead of a queue [+ minor other modifications]
+Recursive version: DFS(graph G, start vertex s)
+- mark s as explored
+- for every edge(s,v)
+    - if v unexplored
+        -DFS(G,v)
+
+Topological sort:
+Def: A topological ordering of a directed graph G is a labelling f of G's nodes
+such that:
+    - the f(v)'s are the set {1, 2,...n}
+    - (u, v) in G => f(u) < f(v)
+Motivation: sequence tasks while respecting all precedence constraints
+Theorem: no cycled directed
+Note: every acyclic graph has a sink vertex
+- let v be a sink vertex of G
+- set f(v) = n
+- recurse on G-{v}
+
+Topological sort via DFS:
+DFS(G)
+- mark all nodes unexplored
+- current_label = n [to keep track of ordering]
+- for each vertex v in G
+    - if v not yet explored
+        -DFS(G,v)
+DFS(G, s)
+- mark all nodes unexplored
+- current_label = n [to keep track of ordering]
+- for each vertex v in G
+    - if v not yet explored
+        -DFS(G,v)
+- set f(s) = current_label
+- current_label --
+
+Strongly connected components:
+------------------------------
+    SCCs of a directed graph G are the equivalence classes of the relation u~v
+    <=> there exist a path u -> v and a path v -> u
+Kosaraju's Two-Pass Algorithm:
+    - Can compute SCCs in O(m+n) time
+    - 1) let G_rev = G with all arcs reversed
+    - 2) run DFS-loop on G_rev
+        - compute magical ordering of nodes
+        - f(v) = "finishing time" of each v
+    - 3) run DFS-loop on G
+        - processing nodes in decreasing order of finishing time
+        => SCCs = nodes with same "leader"
+DFS-Loop (graph	G)
+    Global variable	t =	0
+    [# of nodes processed so far]
+    Global variable	s =	NULL
+    [current source	vertex]
+    Assume nodes labeled 1 to n
+    For	i =	n down to 1
+        if i not yet explored
+            s := i
+            DFS(G,i)
+DFS	(graph G, node i)
+    mark i as explored
+    set	leader(i) := node s
+    for	each arc(i,j) in G:
+        if j not yet explored
+            DFS(G,j)
+    t++
+    set	f(i) :=	t
+
+Web Graph:
+----------
+vertices: web pages
+(directed) edges: hyperlinks
+size: about 200 million node, 1 billion edges
+Computed the SCCs of the web graph (pre-map-reduce/hadoop)
+
+The Bow Tie:
+    tendrils <= in => giant SCC (core of the web) => out <= tendrils
+    e.g. new web pages                              e.g. corporate web sites
+    in => out tubes
+1) all four parts(giant, in, out, tubes+tendrils) have roughly the same size
+2) within CORE, very well connected (has the "small world" property)
+3) ouside, surprisingly poor connected
+
+Modern web search:
+------------------
+1) temporal aspects: - how is the web graph	evolving over time?
+2) informational aspects: how does new information propagate throughout	the	Web
+(or	blogosphere, or	Tweeter, etc.)
+3) finer-grained structure: how	to define and compute “communities”	in information
+and	social networks?
