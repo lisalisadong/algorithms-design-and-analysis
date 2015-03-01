@@ -1,0 +1,71 @@
+Week 5
+-----------------------------
+XI. DIJKSTRA'S SHORTEST-PATH ALGORITHM
+-----------------------------
+Single-Source Shortest Paths:
+-----------------------------
+Input: directed graph G=(V, E). (m=|E|, n=|V| )
+• each edge has non negative length le
+• source vertex s
+Output: for each , compute
+• L(v) := length of a shortest s-v path in G
+  (Length of path = sum of edge lengths)
+Replace each edge e by directed path of le unit length edges: blows up graph too much
+
+Dijkstra’s Algorithm:
+---------------------
+Initialize:
+• X	= [s] [vertices	processed so far]
+• A[s] = 0 [computed shortest path distances]
+• B[s] = empty path [computed shortest paths] - This array only to help explanation!
+Main Loop:
+• while XǂV:
+• among all edges (v, w) with v in X, w not in X, pick one that minimizes A[v] + lvw
+  [call it (v*, w*)]
+• add w* to	X
+• set A[w*] := A[v*] + lv*w*
+• set B[w*] := B[v*]u(v*, w*)
+
+Correctness:
+------------
+Proof by induction on the number of iterations (must use "one-negative" condition)
+
+Implementation and running time:
+--------------------------------
+- won't use B[s]
+- natively (n - 1) iterations of while loop, Theta(m) work per iteration, Theta(1)work per edge
+=> Theta(mn)
+
+Optimized by Heap operations:
+-----------------------------
+raison d’être of heap = perform Insert, Extract-Min in O(log n) time.
+• conceptually, a perfectly balanced binary tree
+• Heap property: at every node, key <= children’s keys
+• extract-min by swapping up last leaf, bubbling down
+• insert via bubbling up
+Also: will need ability to delete from middle of heap. (bubble up or down as needed)
+
+Two	Invariants:
+    - Invariant # 1: elements in heap = vertices of V-X.
+    - Invariant #2: for Key[v] = smallest Dijstra greedy score of an edge (u, v)
+    in E with v in X (of + if no such edges exist)
+    - Point: by invariants, ExtractMin yields correct vertex w* to add to X next.
+    (and we set A[w*] to key[w*])
+
+To maintain Invariant #2: [i.e., that for all v not in X, Key[v] = smallest Dijkstra
+greedy score of edge (u,v) with u in X]
+
+When w extracted from heap (i.e., added to X)
+• for each edge (w,v) in E:
+• if v in V-X (i.e., in heap)
+• delete v from heap
+• recompute key[v] = min{key[v] , A[w] + lwv }
+• re-Insert v into heap
+
+Running	Time Analysis:
+    dominated by heap operations. (O(log(n)) each )
+    • (n-1) Extract mins
+    • each edge (v,w) triggers at most one Delete/Insert combo
+    (if v added to X first)
+    So: # of heap operations in O(n+m) = O(m)
+    So: running time = O(m log(n)) (like sorting)
