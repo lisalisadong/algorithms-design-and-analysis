@@ -69,3 +69,81 @@ Running	Time Analysis:
     (if v added to X first)
     So: # of heap operations in O(n+m) = O(m)
     So: running time = O(m log(n)) (like sorting)
+
+-----------------------------
+XII. HEAPS
+-----------------------------
+Data structures:
+----------------
+Point: organize	data so	that it	can	be accessed	quickly	and	usefully.
+Examples: lists, stacks, queues, heaps,	search trees, hashtables, bloom	filters,
+union-find, etc.
+Rule of	Thumb: choose the “minimal”	data structure that	supports all the opera/ons
+that you need.
+
+Heap: supported operations
+--------------------------
+- A	container for objects that have	keys
+- Employer records,	network	edges, events, etc.
+Insert:	add	a new object to	a heap.
+    - Running time: O(log(n))
+Extract-Min: remove	an object in heap with a minimum key value.	[ties broken arbitrarily]
+    - Running time:	O(log n) [n	= #	of objects in heap]
+Also: HEAPIFY(n	batched	Inserts	in O(n)	time), DELETE(O(log(n))	time)
+
+Application: Sorting
+--------------------
+Canonical use of heap: fast	way	to do repeated minimum computations.
+Example: SelectionSort ~ Theta(n) linear scans, Theta(n^2) runtime on array	of length n
+Heap Sort: 1.) insert all n array elements into	a heap
+           2.) Extract-Min to pluck	out	elements in	sorted order
+Running	Time = 2n heap opera4ons = O(nlog(n)) time.
+
+Application: Event Manager
+--------------------------
+“Priority Queue” – synonym for a heap.
+Example: simulation	(e.g., for a video game)
+- Objects = event records [Action/update	to occur at	given time in the future]
+- Key =	time event scheduled to	occur
+- Extract-Min => yields	the	next scheduled event
+
+Application: Median Maintenence
+-------------------------------
+Input:	a sequence x1,…,xn of numbers, one-by-one.
+Output:	at each	time step i, the median	of {x1,….,xi}.
+Constraint:	use	O(log(i)) time at each step	i.
+Solution: maintain heaps H_Low: supports Extract Max
+                         H_High: supports Extract Min
+Key	Idea: maintain invariant that ~	i/2	smallest (largest) elements	in H_Low(H_High)
+1.)	can	maintain invariant with	O(log(i)) work
+2.)	given invariant, can compute median	in O(log(i)) work
+
+Application: Speeding Up Dijkstra
+---------------------------------
+- Naïve implementation => runtime = Theta(nm)
+- with heaps =>	runtime	= O(m log(n))
+
+The Heap Property:
+------------------
+Conceptually: as a tree - rooted, binary, as complete as possible
+Property: at every node of x, Key[x] <= all keys of x's children
+Consequence: object at root must have minimum key value
+Array implementation:
+    parent(i) = i/2 if i is even, [i/2](round down) if i is odd
+    children(i) = 2i, 2i+1
+
+Insert and Bubble-Up:
+---------------------
+Implementation of Insert (given	key	k)
+Step 1: stick k	at end of last level.
+Step 2:	Bubble-Up k	until heap property	is restored	(i.e., key of k’s parent <=	k)
+run time = O(log(n))
+
+Extract-Min	and	Bubble-Down:
+----------------------------
+Implementation of Extract-Min
+1. Delete root
+2. Move	last leaf to be	new	root.
+3. Iteratively Bubble-Down until heap property has been	restored
+[always	swap with smaller child!]
+run	time = O(log(n))
