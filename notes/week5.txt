@@ -147,3 +147,182 @@ Implementation of Extract-Min
 3. Iteratively Bubble-Down until heap property has been	restored
 [always	swap with smaller child!]
 run	time = O(log(n))
+
+-----------------------------
+XIII. BALANCED BINARY SEARCH TREES
+-----------------------------
+Sorted Arrays: Supported Operations
+-----------------------------------
+OPERATIONS                        |  RUNNING TIME
+----------------------------------|--------------
+SEARCH                            |  θ(log(n))
+SELECT (given order statistic i)  |  O(1)
+MIN/MAX                           |  O(1)
+PRED/SUCC (given pointer to a key)|  O(1)
+RANK (i.e., # of keys less than   |
+or equal to a given value)        |  O(log(n))
+OUTPUT IN SORTED ORDER            |  O(n)
+INSERT                            |  θ(n)
+DELETE                            |  θ(n)
+
+Balanced Search Trees: Supported Operations
+-------------------------------------------
+OPERATIONS                        |  RUNNING TIME
+----------------------------------|--------------
+SEARCH                            |  θ(log(n))
+SELECT (given order statistic i)  |  O(log(n))
+MIN/MAX                           |  O(log(n))
+PRED/SUCC (given pointer to a key)|  O(log(n))
+RANK (i.e., # of keys less than   |
+or equal to a given value)        |  O(log(n))
+OUTPUT IN SORTED ORDER            |  O(n)
+INSERT                            |  O(log(n))
+DELETE                            |  O(log(n))
+
+Heap: Supported Operations
+--------------------------
+OPERATIONS                        |  RUNNING TIME
+----------------------------------|--------------
+MIN/MAX  (OR)                     |  O(1)
+INSERT                            |  O(log(n))
+DELETE                            |  O(log(n))
+*space and time better than balanced search tree
+
+Hash table: Supported Operations
+--------------------------------
+OPERATIONS                        |  RUNNING TIME
+----------------------------------|--------------
+SEARCH                            |  O(1)
+INSERT                            |  O(1)
+DELETE                            |  O(1)
+
+Binary Search Trees Structure:
+------------------------------
+- exactly one node per key
+- most basic version :
+    each node has
+    - left child pointer
+    - right child pointer
+    - parent pointer
+
+SEARCH TREE PROPERTY:
+all keys of x's left children < x
+all keys of x's right children > x
+( should hold at every node of the search tree )
+
+- many possible trees for a set of keys.
+- height (aka depth - longest root-leaf path) could be anywhere from ~log2(n) to ~n
+
+Searching and Inserting:
+------------------------
+To Search for key k in tree T:
+- start at the root
+- traverse left / right child pointers as needed
+- return node with key k or NULL, as appropriate
+
+To Insert a new key k into a tree T:
+- search for k (unsuccessfully)
+- rewire final NULL ptr to point to new node with key k
+
+Min, Max, Pred, And Succ:
+-------------------------
+To compute the minimum (maximum) key of a tree
+- Start at root
+- Follow left child pointers (right ptrs, for maximum) until you can't anymore
+(return last key found)
+
+To compute the predecessor of key k
+- Easy case : If k’s left subtree nonempty, return max key in left subtree
+- Otherwise : follow parent pointers until you get to a key less than k.
+
+In-Order Traversal:
+-------------------
+TO PRINT OUT KEYS IN INCREASING ORDER
+- Let r = root of search tree, with subtrees TL and TR
+- recurse on TL [by recursion (induction) prints out keys of TL in increasing order]
+- Print out r’s key
+- Recurse on TR [prints out keys of TR in increasing order]
+
+RUNNING TIME
+O(1) time, n recursive calls => O(n) total
+
+Deletion:
+---------
+TO DELETE A KEY K FROM A SEARCH TREE
+- SEARCH for k
+
+EASY CASE (k’s node has no children)
+- Just delete k’s node from tree, done
+
+MEDIUM CASE (k’s node has one child)
+(unique child assumes position previously held by k’s node)
+
+DIFFICULT CASE (k’s node has 2 children)
+- Compute k’s predecessor l [i.e., traverse k’s (non-NULL) left child ptr, then
+right child ptrs until no longer possible ]
+- SWAP k and l !
+=> easy to delete or splice out k’s new node
+
+RUNNING TIME: θ(height)
+
+Select and Rank:
+----------------
+Idea: store a little bit of extra info at each tree node about the tree itself
+(i.e., not about the data)
+Example Augmentation : size(x) = # of tree nodes in subtree rooted at x.
+Note: if x has children y and z, then size(y) + size(z) + 1
+Also: easy to keep sizes up-to-date during an Insertion or Deletion
+
+HOW TO SELECT Ith ORDER STATISTIC FROM AUGMENTED SEARCH TREE (with subtree sizes)
+- start at root x, with children y and z
+- let a = size(y) [a = 0 if x has no left child ]
+- if a = i-1, return x’s key
+- if a >= i, recursively compute ith order statistic of search tree rooted at y
+- if a < i-1 recursively compute (i-a-1)th order statistic of search tree rooted at z
+RUNNING TIME = θ(height).
+
+Balanced Search Trees:
+----------------------
+Idea: ensure that height is always O(log(n)) [best possible]
+⇒Search / Insert / Delete / Min / Max / Pred / Succ will then run in O(log(n)) time
+Example : red-black trees [Bayes ‘72, Guibas-Sedgewick ‘78]
+[see also AUL trees, splay trees, B trees]
+
+Red-Black Invariants:
+1. Each node red or black
+2. Root is black
+3. No 2 reds in a row [red node => only black children]
+4. Every root-NULL path has same number of black nodes
+
+Height Guarantee:
+Claim: every red-black tree with n nodes has height <= 2log2(n+1)
+Proof : Observation : if every root-NUL path has >= k nodes, then tree includes
+(at the top) a perfectly balanced search tree of depth k-1.
+=> Size n of the tree must be at least 2^k - 1
+=> k <= log2(n+1)
+Thus: in a red-black tree with n nodes, there is a root-NULL path with at most
+log2(n+1) black nodes.
+By 4th Invariant: every root-NULL path has <= log2(n+1) black nodes
+By 3rd Invariant: every root-NULL path has <= 2log2(n+1) total nodes.
+
+Insertion In A Red-Black Tree
+-----------------------------
+Idea for Insert/Delete: Proceed as in a normal binary search tree, then recolor
+and/or perform rotations until invariants are restored.
+
+Insert(x):
+1. Insert x as usual (makes x a leaf).
+2. Try coloring x red.
+3. If x’s parent y is black, done.
+4. Else y is red ⇒ y has a black parent w
+
+Case 1: The other child z of x’s grandparent w is also red.
+⇒ Recolor y, z black and w red. [key point: does not break invariant (4)]
+⇒ Either restores invariant (3) or propagates the double red upward.
+⇒ Can only happen O(log n) times. [If you reach the root, recolor it black ⇒
+Preserves invariant (4)].
+
+Case 2: Let x, y be the current double-red, x the deeper node. Let w = x’s
+grandparent. Suppose w’s other child is NULL or is a black node z.
+Exercise/case analysis (details omitted): Can eliminate double-red [⇒ All
+invariants satisfied] in O(1) time via 2-3 rotations+recolorings.
