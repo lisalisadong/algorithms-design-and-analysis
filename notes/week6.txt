@@ -1,0 +1,156 @@
+Week 6
+-----------------------------
+XIV. HASHING: THE BASICS
+-----------------------------
+O(1) for insert/delete/lookup
+1) properly implemented
+2) non-pathological data
+
+Application: De-Duplication
+---------------------------
+Input: a stream of objects
+Goal: remove duplicates
+Solution: 1)lookup 2)if not found, insert
+
+Application: The Two-Sum Problem
+--------------------------------
+Input: sorted array of n integers, target sum t
+Goal: whether or not there are two numbers x and y in A with x + y = t
+Naive solution: θ(n^2) time via exhaustive search
+Better:  1) sort A (θ(nlogn) time) 2)for each x in A, search for t-x in A via binary search (θ(nlogn))
+Using HashTable => linear time
+
+Further Immediate Applications:
+-------------------------------
+- historical applications: symbol tables in compilers
+- blocking network traffic
+- searching algorithms (e.g., game tree exploration)
+    - use hash table to avoid exploring any configuration more than once
+    (e.g., arrangement of chess pieces)
+
+High-Level Idea
+---------------
+Setup: universe	U [generally, REALLY BIG]
+Goal: want to maintain evolving	set	S (part of U) [generally, of reasonable size]
+Solution: 1.)pick n	= #	of “buckets” with (for simplicity assume |S| doesn’t vary much)
+          2.)choose	a hash function	h: U -> {0, 1, 2,..., n-1}
+          3.)use array A of	length n, store	x in A[h(x)]
+
+Resolving Collisions
+--------------------
+Collision: distinct x, y in U, such	that h(x) = h(y)
+Solution #1: (separate) chaining
+            -keep linked list in each bucket
+            -given a key/object x, perform Insert/Delete/Lookup in the list in A[h(x)] (A-linked list for x)
+Solution #2: open addressing. (only one object per bucket)
+            -Hash function now specifies probe sequence h1(x),h2(x),..
+            (keep trying till find open slot)
+            -Examples: linear probing (look consecu6vely), double hashing
+            => good for space, bad for deletion
+
+Hash Function:
+--------------
+Note: θ(list length) for insert/delete
+list length could be anywhere from m/n to m	for	m objects
+
+Properties of a	“Good” Hash	function:
+1. Should lead to good performance => i.e., should “spread data	out”
+   (gold standard – completely random hashing)
+2. Should be easy to store/	very fast to evaluate.
+
+Quick-and-Dirty	Hash Functions
+------------------------------
+Objects U ="hash code"=> integers ="comparison function"(like mod n)=> buckets
+How	to choose n	= #	of buckets
+1. Choose n	to be a prime (within constant factor of # of objects in table)
+2. Not too close to	a power	of 2
+3. Not too close to	a power	of 10
+
+-----------------------------
+XV. UNIVERSAL HASHING
+-----------------------------
+The Load of a Hash Table
+------------------------
+Def: the load factor of a hash table is
+alpha = # of objects in hash table / # of buckets of hash table
+Note: 1) alpha = O(1) is necessary condition for operations to run in constant time
+      2) with open addressing, need alpha << 1
+Upshot #1: for good HT performance, need to control load
+
+Pathological Data Sets
+----------------------
+Upshot #2: for good HT performance, need a good hash function
+For every hash function, there is a pathological data set
+
+Solutions:
+----------
+1) use a cryptographic hash function (e.g., SHA-2)
+- infeasible to reverse engineer a pathological data sets
+2) use randomization
+- design a Family H of hash functions such that, for all data sets S, "almost all"
+functions h in H spread S out "pretty evenly" (compare to QuickSort garantee)
+
+Universal Hash Function:
+------------------------
+Def: Let H be a set of hash functions from U to {0, 1, 2,..., n-1}
+     H is universal if and only if for all x, y in U (with x != y)
+     Pr[x, y collide (h(x)=h(y))] <= 1/n
+     when h is chosen uniformly at ramdom from H
+
+Open Addressing:
+----------------
+One object per slot, hash function produces a probe sequence for each possible key x
+Heuristic Assumption:
+    - (for a quick & dirty idealized analysis only) all n! probe sequences equally.
+    - Observation: under heuristic assumption, expected insertion time is about 1/(1-alpha)
+    - Proof : A random probe finds an empty slot with probability 1-alpha, so Insertion
+    time ~ the number N of coin flips to get “heads”, where Pr[“heads”] = 1-alpha
+    - Note E[n] = 1 + alpha * E[n] -> Expected # of further coin flips needed
+    => E[n] = 1/(1-alpha)
+Linear Probing:
+Note : heuristic assumption completely false.
+Assume instead : initial probes uniform at random independent for different keys. (“less false”)
+Theorem : [Knuth 1962] under above assumption, expected Insertion time is 1/(1-alpha)^2
+
+-----------------------------
+XV. BLOOM FILTERS
+-----------------------------
+Supported Operations:
+---------------------
+fast Inserts and Lookups
+
+Comparison to Hash Table:
+-------------------------
+Pros: more space efficient
+Cons: 1) can't store an associated object
+      2) no deletion
+      3) small false positive probability, e.g., might say x has been interted even if it hasn't been
+
+Application:
+------------
+Original: early spellcheckers
+Canonical: list of forbidden passwords
+Modern: network routers
+        - limited memory, need to be super-fast
+
+Under the Hood:
+---------------
+Ingredients: 1) array of n bits
+             2) k hash functions h1, ..., hk (k = small constant)
+Insert(x): for i=1, 2, ..., k, setA[hi(x)] = 1
+Lookup(x): return TRUE <=> A[hi(x)] = 1 for every i=1, 2, ..., k
+Note: no false negatives (if x was inserted, Lookup(x) guaranteed to succeed)
+But: false positive if all k hi(x)'s already set to 1 by other insertions
+
+Heuristic Analysis:
+-------------------
+-- trade-off between space and error probability
+Assume: [not justified] all hi(x)’s uniformly random and independent (across different i’s and x’s).
+Setup: n bits, insert data set S into bloom filter.
+Note: for each bit of A, the probability it’s been set to I is (under above assumption):
+      1 - (1 - 1/n)^k|s| <= 1 - e^(-k|s|/n) = 1-e^(-k/b)
+So: under assumption, for x not in S, false positive probability is <= [1-e^(-k/b)]^k (error rank E),
+where b = # of bits per object.
+How to set k?: for fixed b, E is minimized by setting
+Plugging back in: E ~ (1/2)^(ln2)b or b ~ 1.44log2(1/E), k ~(ln2).b ~ 0.692
+Ex: with b = 8, choose k = 5 or 6 , error probability only approximately 2%.
