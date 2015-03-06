@@ -14,6 +14,7 @@
  * Output format:
  * An integer between 0 and 20001.
  *
+ *Time Complexity: O(n)
  */
 
 import java.io.*;
