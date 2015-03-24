@@ -23,6 +23,7 @@ Completed the six weeks' course [Algorithms: Design and Analysis, Part I on Cour
 
 ####Heap:
 * [median maintenance](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/median-maintenance)
+* [optimized dijkstra](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/optimized-dijkstra)
 
 ####Statements of accomplishment
 Expected on March 15, 2015
