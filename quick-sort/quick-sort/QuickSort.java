@@ -1,3 +1,24 @@
+/**
+ * @author QingxiaoDong
+ * 
+ * Sorts an array of integers using QuickSort.
+ * 
+ * Input format: 
+ * The file contains all of the integers between 1 and 10,000 (inclusive, with 
+ * no repeats) in unsorted order. The integer in the ith row of the file gives 
+ * you the ith entry of an input array.
+ * 
+ * Output format:
+ * Computes and returns the total number of comparisons used to sort the given 
+ * input file by QuickSort
+ * 
+ * Pivot choosing: 
+ * Consider the first, middle, and final elements of the given array. Identify 
+ * which of these three elements is the median, and use this as pivot.
+ * 
+ * Time complexity: O(n log n) if randomly choose pivot
+ */
+
 import java.io.*;
 import java.util.*;
 

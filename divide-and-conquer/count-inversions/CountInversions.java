@@ -1,8 +1,17 @@
 /**
+ * @author QingxiaoDong
+ * 
  * Find the number of inversions in an array.
  * (two elements a[i] and a[j] form an inversion if a[i] > a[j] and i < j)
  * 
- * @author QingxiaoDong
+ * Input format: 
+ * the file contains all of the 100,000 integers between 1 and 100,000 
+ * (inclusive) in some order, with no integer repeated.
+ * 
+ * Output format:
+ * An integer indicates the number of inversions in the input array.
+ * 
+ * Time complexity: O(n log n)
  */
 
 import java.io.*;

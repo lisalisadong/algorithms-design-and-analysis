@@ -10,7 +10,7 @@
  * for finding the minimum cut (i.e., the minimum-possible number of crossing edges).
  * It has following procedures:
  * 1) pick a remaining edge (u,v) uniformly at random
- * 2) merge (or “contract” ) u and v into a single vertex
+ * 2) merge (or contract ) u and v into a single vertex
  * 3) remove self-loops
  * 4) return cut represented by final 2 vertices.
  * 
