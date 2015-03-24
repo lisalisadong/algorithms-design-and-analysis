@@ -10,7 +10,8 @@ Completed the six weeks' course [Algorithms: Design and Analysis, Part I on Cour
 * [the closest pair](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/divide-and-conquer/the-closest-pair)
 
 #####QuickSort:
-* [quick sort](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/quick-sort)
+* [quick sort](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/quick-sort/quick-sort)
+* [linear time selection (find median in linear time)](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/quick-sort/linear-time-selection)
 
 #####Graph:
 * [dijkstra shortest path](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/graph/dijkstra-shortest-path)
