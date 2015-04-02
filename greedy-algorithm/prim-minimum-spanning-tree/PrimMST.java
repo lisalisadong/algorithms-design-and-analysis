@@ -15,7 +15,7 @@
  * Output Format:
  * An integer indicating the overall cost of a minimum spanning tree, which may or may not be negative.
  * 
- * Time Complexity: O(m log n) using heap that supports deletions (stores unprocessed vertices)
+ * Time Complexity: O(m log n) using heap that supports updatings (stores unprocessed vertices)
  */
 
 import java.io.*;
