@@ -19,6 +19,8 @@
  * 
  * Output format:
  * A positive integer which indicating the sum of weighted completion times of the resulting schedule.
+ * 
+ * Time complexity: O(n log n)
  */
 
 import java.io.*;
