@@ -27,5 +27,5 @@ Completed the six weeks' course [Algorithms: Design and Analysis, Part I on Cour
 * [heap sort (using self implemented heap structure)](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/heap-sort)
 
 ####Statements of accomplishment
-Part 1, course from January 19, 2015 to March 14, 2015.
+Part 1, course from January 19, 2015 to March 14, 2015. Grade achieved: 100%.
 ![Statements of Accomplishment](https://github.com/lisalisadong/algorithms-design-and-analysis/blob/master/certificate.png)
