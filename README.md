@@ -21,7 +21,7 @@ Completed the six weeks' course [Algorithms: Design and Analysis, Part I on Cour
 #####HashTable:
 * [two sum](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/hash-table/two-sum)
 
-####Heap:
+#####Heap:
 * [median maintenance](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/median-maintenance)
 * [optimized dijkstra](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/optimized-dijkstra)
 * [heap sort (using self implemented heap structure)](https://github.com/lisalisadong/algorithms-design-and-analysis/tree/master/heap/heap-sort)
